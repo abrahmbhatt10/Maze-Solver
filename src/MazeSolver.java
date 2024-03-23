@@ -5,6 +5,9 @@
  */
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 public class MazeSolver {
     private Maze maze;
@@ -27,10 +30,86 @@ public class MazeSolver {
      * @return An arraylist of MazeCells to visit in order
      */
     public ArrayList<MazeCell> getSolution() {
+        // New stack to reverse arraylist
+        Stack<MazeCell> tStack = new Stack<MazeCell>();
+        // Creating empty arraylist and maze cell with maze cell type
+        ArrayList<MazeCell> mSolution = new ArrayList<MazeCell>();
+        //Defines temporary cell
+        MazeCell tMazeCell = null;
+        // Defines current cell
+        MazeCell cMazeCell = null;
         // TODO: Get the solution from the maze
         // Should be from start to end cells
-        return null;
+        tMazeCell = maze.getEndCell();
+        // Gets all the cells in the solution till it reaches startCell
+        while(tMazeCell != maze.getStartCell())
+        {
+            tStack.push(tMazeCell);
+            cMazeCell = tMazeCell;
+            tMazeCell = cMazeCell.getParent();
+        }
+        tStack.push(maze.getStartCell());
+        while(!(tStack.isEmpty()))
+        {
+            mSolution.add(tStack.pop());
+        }
+        return mSolution;
     }
+
+    // Returns the row based on direction
+    public int getDirectionRow(int direction, int currentRow)
+    {
+        int result = -1;
+        if(direction == 0)
+        {
+            // Going north
+            result = currentRow - 1;
+        }
+        if(direction == 1)
+        {
+            // Going East
+            result = currentRow;
+        }
+        if(direction == 2)
+        {
+            // Going South
+            result = currentRow + 1;
+        }
+        if(direction == 3)
+        {
+            // Going West
+            result = currentRow;
+        }
+        return result;
+    }
+    // Returns the col based on direction
+    public int getDirectionCol(int direction, int currentCol)
+    {
+        int result = -1;
+        if(direction == 0)
+        {
+            // Going north
+            result = currentCol;
+        }
+        if(direction == 1)
+        {
+            // Going East
+            result = currentCol + 1;
+        }
+        if(direction == 2)
+        {
+            // Going South
+            result = currentCol;
+        }
+        if(direction == 3)
+        {
+            // Going West
+            result = currentCol - 1;
+        }
+        return result;
+    }
+
+
 
     /**
      * Performs a Depth-First Search to solve the Maze
@@ -39,7 +118,37 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeDFS() {
         // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-        return null;
+        Stack<MazeCell> dfsStack = new Stack<MazeCell>();
+        dfsStack.push(maze.getStartCell());
+        // Sets start cell to is explored
+        maze.getStartCell().setExplored(true);
+        // Defines temporary row and col for each mazeCell
+        int tRow;
+        int tCol;
+        MazeCell tCell = null;
+        // Pushes neighboring cells to stack
+        while(!dfsStack.isEmpty())
+        {
+            // Pops the first cell from the array
+            tCell = dfsStack.pop();
+            for(int i = 0; i < 4; i++)
+            {
+                tRow = getDirectionRow(i, tCell.getRow());
+                tCol = getDirectionCol(i, tCell.getCol());
+                if(maze.isValidCell(tRow,tCol) && !(maze.getCell(tRow,tCol).isExplored()))
+                {
+                    dfsStack.push(maze.getCell(tRow,tCol));
+                    maze.getCell(tRow,tCol).setExplored(true);
+                    maze.getCell(tRow,tCol).setParent(tCell);
+                    // Stops when it reaches end cell
+                    if(maze.getCell(tRow,tCol) == maze.getEndCell())
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        return getSolution();
     }
 
     /**
@@ -49,7 +158,37 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-        return null;
+        Queue<MazeCell> tQueue = new LinkedList<MazeCell>();
+        tQueue.add(maze.getStartCell());
+        // Sets start cell to is explored
+        maze.getStartCell().setExplored(true);
+        // Defines temporary row and col for each mazeCell
+        int tRow;
+        int tCol;
+        MazeCell tCell = null;
+        // Pushes neighboring cells to stack
+        while(!tQueue.isEmpty())
+        {
+            // Pops the first cell from the array
+            tCell = tQueue.remove();
+            for(int i = 0; i < 4; i++)
+            {
+                tRow = getDirectionRow(i, tCell.getRow());
+                tCol = getDirectionCol(i, tCell.getCol());
+                if(maze.isValidCell(tRow,tCol) && !(maze.getCell(tRow,tCol).isExplored()))
+                {
+                    tQueue.add(maze.getCell(tRow,tCol));
+                    maze.getCell(tRow,tCol).setExplored(true);
+                    maze.getCell(tRow,tCol).setParent(tCell);
+                    // Stops when it reaches end cell
+                    if(maze.getCell(tRow,tCol) == maze.getEndCell())
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        return getSolution();
     }
 
     public static void main(String[] args) {

@@ -10,6 +10,8 @@ public class MazeCell {
     private MazeCell parent;
     private int row;
     private int col;
+    // Instantiates new char for answer state
+    private char answerState;
 
     public MazeCell(int row, int col) {
         this.row = row;

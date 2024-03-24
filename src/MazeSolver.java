@@ -1,6 +1,6 @@
 /**
  * Solves the given maze using DFS or BFS
- * @author Ms. Namasivayam
+ * @author Agastya "Gus" Brahmbhatt
  * @version 03/10/2023
  */
 
@@ -24,6 +24,13 @@ public class MazeSolver {
         this.maze = maze;
     }
 
+    // Getter for maze
+
+
+    public Maze getMaze() {
+        return maze;
+    }
+
     /**
      * Starting from the end cell, backtracks through
      * the parents to determine the solution
@@ -42,7 +49,7 @@ public class MazeSolver {
         // Should be from start to end cells
         tMazeCell = maze.getEndCell();
         // Gets all the cells in the solution till it reaches startCell
-        while(tMazeCell != maze.getStartCell())
+        while(tMazeCell != null && tMazeCell != maze.getStartCell())
         {
             tStack.push(tMazeCell);
             cMazeCell = tMazeCell;
@@ -202,6 +209,7 @@ public class MazeSolver {
         // Solve the maze using DFS and print the solution
         ArrayList<MazeCell> sol = ms.solveMazeDFS();
         maze.printSolution(sol);
+        //maze.printSolutionToFile(sol, "Resources/maze3-DFS-sol.txt");
 
         // Reset the maze
         maze.reset();
@@ -209,5 +217,6 @@ public class MazeSolver {
         // Solve the maze using BFS and print the solution
         sol = ms.solveMazeBFS();
         maze.printSolution(sol);
+        //maze.printSolutionToFile(sol, "Resources/maze3-BFS-sol.txt");
     }
 }

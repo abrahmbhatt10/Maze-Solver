@@ -6,6 +6,8 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -19,6 +21,26 @@ public class Maze {
     public Maze(String filename) {
         createMaze(filename);
         printMaze();
+    }
+
+    // Getters for row and col numbers
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public int getNumCols() {
+        return numCols;
+    }
+
+    // Sets start and end cells
+
+
+    public void setStartCell(MazeCell startCell) {
+        this.startCell = startCell;
+    }
+
+    public void setEndCell(MazeCell endCell) {
+        this.endCell = endCell;
     }
 
     /**
@@ -106,6 +128,34 @@ public class Maze {
                 }
             }
             System.out.println();
+        }
+    }
+
+    // Extras
+    public void printSolutionToFile(ArrayList<MazeCell> sol, String fileName) {
+        try {
+            FileWriter myWriter = new FileWriter(fileName);
+            for (int row=0; row<this.numRows; row++) {
+                for (int col=0; col<this.numCols; col++) {
+                    if (this.mazeGrid[row][col].isWall()) {
+                        myWriter.write("#");
+                    } else if (this.startCell == this.mazeGrid[row][col]) {
+                        myWriter.write("A");
+                    } else if (this.endCell == this.mazeGrid[row][col]) {
+                        myWriter.write("B");
+                    } else if(sol.contains(this.mazeGrid[row][col])) {
+                        myWriter.write("*");
+                    } else {
+                        myWriter.write(" ");
+                    }
+                }
+                myWriter.write('\n');
+            }
+            myWriter.close();
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 

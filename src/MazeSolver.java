@@ -45,7 +45,6 @@ public class MazeSolver {
         MazeCell tMazeCell = null;
         // Defines current cell
         MazeCell cMazeCell = null;
-        // TODO: Get the solution from the maze
         // Should be from start to end cells
         tMazeCell = maze.getEndCell();
         // Gets all the cells in the solution till it reaches startCell
@@ -123,7 +122,6 @@ public class MazeSolver {
      * @return An ArrayList of MazeCells in order from the start to end cell
      */
     public ArrayList<MazeCell> solveMazeDFS() {
-        // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
         Stack<MazeCell> dfsStack = new Stack<MazeCell>();
         dfsStack.push(maze.getStartCell());
@@ -163,7 +161,6 @@ public class MazeSolver {
      * @return An ArrayList of MazeCells in order from the start to end cell
      */
     public ArrayList<MazeCell> solveMazeBFS() {
-        // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
         Queue<MazeCell> tQueue = new LinkedList<MazeCell>();
         tQueue.add(maze.getStartCell());
@@ -174,7 +171,8 @@ public class MazeSolver {
         int tCol;
         MazeCell tCell = null;
         // Pushes neighboring cells to stack
-        while(!tQueue.isEmpty())
+        boolean endflag = false;
+        while(!tQueue.isEmpty() && !endflag)
         {
             // Pops the first cell from the array
             tCell = tQueue.remove();
@@ -190,6 +188,7 @@ public class MazeSolver {
                     // Stops when it reaches end cell
                     if(maze.getCell(tRow,tCol) == maze.getEndCell())
                     {
+                        endflag = true;
                         break;
                     }
                 }

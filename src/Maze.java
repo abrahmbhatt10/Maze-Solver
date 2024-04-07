@@ -196,7 +196,6 @@ public class Maze {
      * @return boolean true/false
      */
     public boolean isValidCell(int row, int col) {
-        // TODO: Complete this function
         if(row >= this.numRows || row < 0)
         {
             return false;
